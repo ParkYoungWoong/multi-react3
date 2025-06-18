@@ -1,16 +1,18 @@
 import styles from './Button.module.css'
 import Loader from '@/components/Loader'
 
+type Props = {
+  color?: 'primary' | 'secondary' | 'danger'
+  loading?: boolean
+  children: React.ReactNode
+} & React.ButtonHTMLAttributes<HTMLButtonElement>
+
 export default function Button({
-  color,
+  color = 'secondary',
   loading,
   children,
   ...restProps
-}: {
-  color: 'primary' | 'secondary' | 'danger'
-  loading: boolean
-  children: React.ReactNode
-}) {
+}: Props) {
   return (
     <>
       <button
