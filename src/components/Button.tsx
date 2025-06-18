@@ -4,7 +4,8 @@ import Loader from '@/components/Loader'
 export default function Button({
   color,
   loading,
-  children
+  children,
+  ...restProps
 }: {
   color: 'primary' | 'secondary' | 'danger'
   loading: boolean
@@ -12,7 +13,9 @@ export default function Button({
 }) {
   return (
     <>
-      <button className={`${styles.button} ${styles[color]}`}>
+      <button
+        {...restProps}
+        className={`${styles.button} ${styles[color]}`}>
         {loading ? (
           <Loader
             color="#fff"
