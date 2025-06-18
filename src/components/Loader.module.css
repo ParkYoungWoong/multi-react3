@@ -10,6 +10,7 @@
   border-top-color: transparent;
   border-radius: 50%;
   animation: hloader var(--hloader-duration) infinite linear;
+  box-sizing: border-box;
 }
 @keyframes hloader {
   0% {

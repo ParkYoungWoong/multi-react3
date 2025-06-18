@@ -1,0 +1,8 @@
+{
+  "name": "Neo",
+  "age": 22,
+  "address": {
+    "city": "Seoul",
+    "emails": ["neo@gmail.com", "neo@naver.com"]
+  }
+}
