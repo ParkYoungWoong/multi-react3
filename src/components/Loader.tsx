@@ -5,9 +5,9 @@ export default function Loader({
   size = 30,
   width = 4
 }: {
-  color: string
-  size: number
-  width: number
+  color?: string
+  size?: number
+  width?: number
 }) {
   return (
     <>

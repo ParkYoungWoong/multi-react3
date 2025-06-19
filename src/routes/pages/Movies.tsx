@@ -1,30 +1,17 @@
 import TextField from '@/components/TextField'
 import Button from '@/components/Button'
-import { useState } from 'react'
-
-export type Movies = Movie[]
-export interface Movie {
-  Title: string
-  Year: string
-  imdbID: string
-  Type: string
-  Poster: string
-}
+import { useMovieStore } from '@/stores/movie'
+import { Link } from 'react-router'
 
 export default function Movies() {
-  const [searchText, setSearchText] = useState('')
-  const [movies, setMovies] = useState<Movies>([])
-
-  async function fetchMovies() {
-    const res = await fetch(
-      `https://omdbapi.com/?apikey=7035c60c&s=${searchText}`
-    )
-    const { Search } = await res.json()
-    setMovies(Search)
-  }
+  const searchText = useMovieStore(state => state.searchText)
+  const isLoading = useMovieStore(state => state.isLoading)
+  const movies = useMovieStore(state => state.movies)
+  const setSearchText = useMovieStore(state => state.setSearchText)
+  const fetchMovies = useMovieStore(state => state.fetchMovies)
 
   return (
-    <>
+    <div className="flex max-w-[540px] flex-col gap-[20px]">
       <div className="grid grid-cols-[1fr_120px] items-end gap-2">
         <TextField
           label="검색"
@@ -38,15 +25,28 @@ export default function Movies() {
         />
         <Button
           color="primary"
+          loading={isLoading}
           onClick={fetchMovies}>
           검색
         </Button>
       </div>
-      <div>
+      <div className="grid auto-rows-auto grid-cols-5 gap-[10px]">
         {movies.map(movie => (
-          <div key={movie.imdbID}>{movie.Title}</div>
+          // http://localhost:5173/movies/tt1234567
+          <Link
+            to={`/movies/${movie.imdbID}`}
+            key={movie.imdbID}>
+            <div className="line-clamp-1">{movie.Title}</div>
+            <div>
+              <img
+                src={movie.Poster}
+                alt={movie.Title}
+                width={100}
+              />
+            </div>
+          </Link>
         ))}
       </div>
-    </>
+    </div>
   )
 }

@@ -1,11 +1,21 @@
-import { Link } from 'react-router'
+import { NavLink } from 'react-router'
+
+const navigations = [
+  { to: '/', label: 'Home' },
+  { to: '/about', label: 'About' },
+  { to: '/movies', label: 'Movies' }
+]
 
 export default function Header() {
   return (
     <header>
-      <Link to="/">Home</Link>
-      <Link to="/about">About</Link>
-      <Link to="/movies">Movies</Link>
+      {navigations.map(nav => (
+        <NavLink
+          to={nav.to}
+          className={({ isActive }) => (isActive ? 'text-red-500' : '')}>
+          {nav.label}
+        </NavLink>
+      ))}
     </header>
   )
 }

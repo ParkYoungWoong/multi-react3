@@ -3,6 +3,7 @@ import DefaultLayout from '@/routes/layouts/Default'
 import Home from '@/routes/pages/Home'
 import About from '@/routes/pages/About'
 import Movies from '@/routes/pages/Movies'
+import MovieDetails from '@/routes/pages/MovieDetails'
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,12 @@ const router = createBrowserRouter([
       {
         path: '/movies', // http://localhost:5173/movies
         element: <Movies />
+      },
+      // 라우트(Route) 객체!
+      // 동적 세그먼트(Dynamic Segment)
+      {
+        path: '/movies/:movieId', // http://localhost:5173/movies/영화ID
+        element: <MovieDetails />
       }
     ]
   }
