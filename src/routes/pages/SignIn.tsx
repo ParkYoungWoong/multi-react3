@@ -1,12 +1,30 @@
 import { useState } from 'react'
 import TextField from '@/components/TextField'
 import Button from '@/components/Button'
+import { delay } from '@/utils'
+import { useNavigate } from 'react-router'
 
 export default function App() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const navigate = useNavigate()
+
+  async function signIn() {
+    if (isLoading) return
+    setIsLoading(true)
+    // 로그인 API 요청
+    await delay(1500)
+    if (email && password) {
+      const accessToken = 'abcd1234'
+      localStorage.setItem('accessToken', accessToken)
+      navigate('/')
+    }
+    setIsLoading(false)
+  }
+
   return (
-    <>
+    <div className="flex max-w-[400px] flex-col gap-[10px]">
       <TextField
         type="text"
         placeholder="이메일을 입력해주세요."
@@ -24,11 +42,12 @@ export default function App() {
       />
       <Button
         color="primary"
-        loading={false}>
+        loading={isLoading}
+        onClick={signIn}>
         로그인
       </Button>
       <h2>{email}</h2>
-    </>
+    </div>
   )
 }
 

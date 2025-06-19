@@ -1,7 +1,7 @@
 import TextField from '@/components/TextField'
 import Button from '@/components/Button'
 import { useMovieStore } from '@/stores/movie'
-import { Link } from 'react-router'
+import { Link, useOutlet } from 'react-router'
 
 export default function Movies() {
   const searchText = useMovieStore(state => state.searchText)
@@ -9,6 +9,8 @@ export default function Movies() {
   const movies = useMovieStore(state => state.movies)
   const setSearchText = useMovieStore(state => state.setSearchText)
   const fetchMovies = useMovieStore(state => state.fetchMovies)
+
+  const outlet = useOutlet()
 
   return (
     <div className="flex max-w-[540px] flex-col gap-[20px]">
@@ -47,6 +49,7 @@ export default function Movies() {
           </Link>
         ))}
       </div>
+      {outlet}
     </div>
   )
 }

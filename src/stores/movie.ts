@@ -89,3 +89,5 @@ export const useMovieStore = create(
     })
   )
 )
+
+// https://heropy.dev/images/batman.jpg?w=1000

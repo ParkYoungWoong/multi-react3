@@ -1,13 +1,15 @@
 import { useEffect } from 'react'
 import { useMovieStore } from '@/stores/movie'
-import { useParams } from 'react-router'
+import { useParams, useNavigate } from 'react-router'
 import Loader from '@/components/Loader'
+import Modal from '@/components/Modal'
 
 export default function MovieDetails() {
   const movie = useMovieStore(state => state.currentMovie)
   const isLoading = useMovieStore(state => state.isLoadingForMovieDetails)
   const fetchMovieDetails = useMovieStore(state => state.fetchMovieDetails)
   const { movieId } = useParams()
+  const navigate = useNavigate()
 
   useEffect(() => {
     fetchMovieDetails(movieId)
@@ -15,17 +17,17 @@ export default function MovieDetails() {
   }, [])
 
   return (
-    <>
+    <Modal onClose={() => navigate('/movies')}>
       {isLoading ? (
         <Loader color="royalblue" />
       ) : (
         movie && (
           <div className="mx-auto flex max-w-[1100px] gap-[70px]">
-            <div className="w-[500px] shrink-0">
+            <div className="w-[350px] shrink-0">
               <img
                 src={movie.Poster.replace('SX300', 'SX1000')}
                 alt={movie.Title}
-                width={500}
+                width={350}
               />
             </div>
             <div className="grow-1">
@@ -55,7 +57,7 @@ export default function MovieDetails() {
           </div>
         )
       )}
-    </>
+    </Modal>
   )
 }
 

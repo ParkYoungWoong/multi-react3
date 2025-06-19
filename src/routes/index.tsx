@@ -4,6 +4,10 @@ import Home from '@/routes/pages/Home'
 import About from '@/routes/pages/About'
 import Movies from '@/routes/pages/Movies'
 import MovieDetails from '@/routes/pages/MovieDetails'
+import NotFound from '@/routes/pages/NotFound'
+import SignIn from '@/routes/pages/SignIn'
+import { requiresAuth } from '@/routes/loaders/requiresAuth'
+import { onlyGuest } from '@/routes/loaders/onlyGuest'
 
 const router = createBrowserRouter([
   {
@@ -19,15 +23,25 @@ const router = createBrowserRouter([
       },
       {
         path: '/movies', // http://localhost:5173/movies
-        element: <Movies />
+        loader: requiresAuth,
+        element: <Movies />,
+        children: [
+          {
+            path: '/movies/:movieId', // http://localhost:5173/movies/영화ID
+            element: <MovieDetails />
+          }
+        ]
       },
-      // 라우트(Route) 객체!
-      // 동적 세그먼트(Dynamic Segment)
       {
-        path: '/movies/:movieId', // http://localhost:5173/movies/영화ID
-        element: <MovieDetails />
+        path: '/signin',
+        loader: onlyGuest,
+        element: <SignIn />
       }
     ]
+  },
+  {
+    path: '*',
+    element: <NotFound />
   }
 ])
 
