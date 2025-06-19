@@ -2,13 +2,18 @@ import { useState } from 'react'
 import TextField from '@/components/TextField'
 import Button from '@/components/Button'
 import { delay } from '@/utils'
-import { useNavigate } from 'react-router'
+import { useNavigate, useSearchParams } from 'react-router'
+import { useUserStore } from '@/stores/user'
 
 export default function App() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
+  const setUser = useUserStore(state => state.setUser)
+  const [searchParams] = useSearchParams()
+  const query = Object.fromEntries(searchParams)
+  console.log(query.redirectTo)
 
   async function signIn() {
     if (isLoading) return
@@ -18,7 +23,9 @@ export default function App() {
     if (email && password) {
       const accessToken = 'abcd1234'
       localStorage.setItem('accessToken', accessToken)
-      navigate('/')
+      setUser({ email })
+      // http://localhost:5173/signin?redirectTo=%2Fmovies
+      navigate(query.redirectTo || '/')
     }
     setIsLoading(false)
   }
