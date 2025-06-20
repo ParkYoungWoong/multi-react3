@@ -6,7 +6,7 @@ import axios from 'axios'
 export type Todos = Todo[] // 할 일 목록
 export interface Todo {
   id: string // 할 일 ID
-  order: number // 할 일 순서
+  order: number // 할 일 순서isEditing
   title: string // 할 일 제목
   done: boolean // 할 일 완료 여부
   createdAt: string // 할 일 생성일
@@ -53,6 +53,12 @@ export const useTodoStore = create(
             if (index !== -1) {
               state.todos[index] = todo
             }
+          })
+        },
+        deleteTodo: async (todo: Todo) => {
+          await request.delete(`/${todo.id}`)
+          set(state => {
+            state.todos = state.todos.filter(t => t.id !== todo.id)
           })
         }
       })

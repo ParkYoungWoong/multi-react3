@@ -1,14 +1,24 @@
 import type { Todo } from '@/stores/todo'
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import TextField from '@/components/TextField'
 import Button from '@/components/Button'
 import { useTodoStore } from '@/stores/todo'
+import { delay } from '@/utils'
 
 export default function TodoItem({ todo }: { todo: Todo }) {
   const [isEditing, setIsEditing] = useState(false)
   const [title, setTitle] = useState(todo.title)
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoadingForUpdate, setIsLoadingForUpdate] = useState(false)
+  const [isLoadingForDelete, setIsLoadingForDelete] = useState(false)
   const updateTodo = useTodoStore(state => state.updateTodo)
+  const deleteTodo = useTodoStore(state => state.deleteTodo)
+  const inputRef = useRef<HTMLInputElement | null>(null)
+
+  useEffect(() => {
+    if (isEditing) {
+      inputRef.current?.focus()
+    }
+  }, [isEditing])
 
   function onEditMode() {
     setIsEditing(true)
@@ -18,16 +28,23 @@ export default function TodoItem({ todo }: { todo: Todo }) {
     setTitle(title)
   }
   async function onSave() {
-    if (isLoading) return
+    if (isLoadingForUpdate) return
     if (!title.trim()) return
     if (title === todo.title) return
-    setIsLoading(true)
+    setIsLoadingForUpdate(true)
     await updateTodo({
       ...todo,
       title
     })
-    setIsLoading(false)
+    setIsLoadingForUpdate(false)
     offEditMode(title)
+  }
+  async function onDelete() {
+    if (isLoadingForDelete) return
+    setIsLoadingForDelete(true)
+    await delay(1500)
+    await deleteTodo(todo)
+    setIsLoadingForDelete(false)
   }
 
   return (
@@ -35,6 +52,7 @@ export default function TodoItem({ todo }: { todo: Todo }) {
       {isEditing ? (
         <div className="grid grid-cols-[1fr_50px_50px_50px] items-end gap-2">
           <TextField
+            ref={inputRef}
             label="할 일 수정"
             value={title}
             onChange={e => setTitle(e.target.value)}
@@ -47,11 +65,16 @@ export default function TodoItem({ todo }: { todo: Todo }) {
           <Button onClick={() => offEditMode()}>취소</Button>
           <Button
             color="primary"
-            loading={isLoading}
+            loading={isLoadingForUpdate}
             onClick={onSave}>
             저장
           </Button>
-          <Button color="danger">삭제</Button>
+          <Button
+            color="danger"
+            loading={isLoadingForDelete}
+            onClick={onDelete}>
+            삭제
+          </Button>
         </div>
       ) : (
         <div className="grid grid-cols-[1fr_50px] items-end gap-2">
