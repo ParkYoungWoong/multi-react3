@@ -1,11 +1,14 @@
 import { createBrowserRouter, RouterProvider } from 'react-router'
 import DefaultLayout from '@/routes/layouts/Default'
+
 import Home from '@/routes/pages/Home'
 import About from '@/routes/pages/About'
 import Movies from '@/routes/pages/Movies'
 import MovieDetails from '@/routes/pages/MovieDetails'
 import NotFound from '@/routes/pages/NotFound'
 import SignIn from '@/routes/pages/SignIn'
+import Todos from '@/routes/pages/Todos'
+
 import { requiresAuth } from '@/routes/loaders/requiresAuth'
 import { onlyGuest } from '@/routes/loaders/onlyGuest'
 
@@ -36,6 +39,10 @@ const router = createBrowserRouter([
         path: '/signin',
         loader: onlyGuest,
         element: <SignIn />
+      },
+      {
+        path: '/todos',
+        element: <Todos />
       }
     ]
   },
