@@ -3,8 +3,8 @@ import { combine } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
 import axios from 'axios'
 
-type Todos = Todo[] // 할 일 목록
-interface Todo {
+export type Todos = Todo[] // 할 일 목록
+export interface Todo {
   id: string // 할 일 ID
   order: number // 할 일 순서
   title: string // 할 일 제목
